@@ -7,7 +7,6 @@
 # 5) The program Loops until user quits
 # 6) Upon quiting the program, prints out a receipt of the items with total and quantity.
 
-# from IPython.display import clear_output
 import os
 
 
@@ -21,22 +20,24 @@ def add():
     print("\n================================ ADD ================================ ")
 
     while True:
-        item = input("What would you like to add to your cart? ").lower()
+        item = input("What would you like to add to your cart? ").lower().strip()
         if item == 'done':
             show(True)
             break
         else:        
             print(f"\tYou've selected {item.upper()}.")
 
-        quant = input(f"\nHow many would you like to add? ")
-        
-        if quant == 'done':
-            show(True)
-            break
-        
-        if quant.isdigit() == False:
-            print("\t!!! Invalid Input. Please enter a whole number. !!!")
-            continue
+        while True:
+            quant = input(f"\nHow many would you like to add? ")
+            if quant == 'done':
+                show(True)
+                break
+            
+            if quant.isdigit() == False:
+                print("\t!!! Invalid Input. Please enter a whole number. !!!")
+                continue
+            else:
+                break
 
         try:
             price = cart[item][1]
@@ -81,14 +82,14 @@ def remove():
             main()
             break
 
-        item = input("What item would you like to remove? \n(Enter an item or type ALL to remove all items from your cart): ").lower()
+        item = input("\nWhat item would you like to remove? \n(Enter an item or type ALL to remove all items from your cart): ").lower().strip()
         if item == 'done':
             show(True)
             break
 
         if item == 'all':
             while True:
-                really_clear = input("Are you sure you want to remove all items from your cart? This action cannot be undone. YES/NO: ").lower()
+                really_clear = input("\nAre you sure you want to remove all items from your cart? This action cannot be undone. YES/NO: ").lower().strip()
                 if really_clear == 'yes':
                     cart.clear()
                     print("\tYou have removed all items from your cart.")
@@ -100,7 +101,13 @@ def remove():
                     continue
         try:
             if really_clear == 'yes':
+                main()
                 break
+            elif really_clear == 'no':
+                really_clear = ''
+                continue
+            else:
+                pass
         except:
             pass
 
@@ -109,7 +116,7 @@ def remove():
                 print(f"\t{item.upper()} removed.")
 
             quant = input(f"\nHow many {item.upper()} would you like to remove?" +
-                f"\n(Enter a whole number or type ALL to remove all {item.upper()} from your cart): ").lower()
+                f"\n(Enter a whole number or type ALL to remove all {item.upper()} from your cart): ").lower().strip()
             if quant.isdigit() == False and quant != 'all':
                 print(f"\t!!! Invalid Input. Please enter a whole number or type ALL to remove all {item.upper()}. !!!")
                 continue
@@ -137,7 +144,7 @@ def remove():
 # ========================= DONE ========================= 
 def done():
     while True:
-        really_done = input("Are you sure you are done? You will not be able to modify your cart. YES/NO: ").lower()
+        really_done = input("\nAre you sure you are done? You will not be able to modify your cart. YES/NO: ").lower().strip()
 
         if really_done == 'yes':
             os.system("cls")
@@ -197,13 +204,13 @@ def start():
 def main():
     while True:
         print("---------------------------------------------------------------------")
-        inp = input("What would you like to do? (ADD / REMOVE / SHOW / DONE): ").lower()
+        inp = input("What would you like to do? (ADD / REMOVE / SHOW / DONE): ").lower().strip()
         if inp not in {'add', 'remove', 'show', 'done'}:
             print("Invalid Input.")
             continue
         
         if inp == 'done':
-            show(True)
+            done()
             break
         
         if inp == 'add':
